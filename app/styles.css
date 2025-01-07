@@ -37,6 +37,7 @@ body, html {
   padding: 1vh 2vw;
   /* border: 2px solid #fcf0c0; */
   background-color: #f8eab6;
+  color: black;
   cursor: pointer;
   text-decoration: none;
   margin-bottom: 3vh;
@@ -67,9 +68,11 @@ margin-top: 1rem; /* Space above the choices container */
   padding: 1vh 1vw; /* Adjust padding based on viewport height and width */
   border: 0.5px solid #f2d79e; /* Solid border */
   background-color: #f6e9bd; /* White background */
+  color: black;
   cursor: pointer; /* Pointer cursor on hover */
   margin-top: 10px; /* Space between the buttons */
   transition: background-color 0.3s, transform 0.3s; /* Smooth transitions */
+  
 }
 
 @media (hover: hover) {
