@@ -29,34 +29,32 @@ export default function Home() {
   const [storyImage, setStoryImage] = useState<string>("/larger_images/goodmorning.png");
 
   function startGame() {
-    console.log("miniApp");
     if (justStarted) {
       setJustStarted(false);
       setStoryText(gameData[currentState].text);
       setStoryImage(gameData[currentState].image);
-      console.log(storyImage);
-      console.log("currentState is ", currentState);
+      // console.log(storyImage);
+      // console.log("currentState is ", currentState);
     }
   }
 
   function changeState(newState: number, selectedPersonalities: Personality[]) {
     if (newState === 0) {
-      console.log("reveal most selected vegetable!");
-      revealMostSelectedVegetable();
+      // console.log("reveal most selected jelly!");
+      revealMostSelectedJellycat();
     } else {
-      console.log(personalities);
-      console.log("selected personalities: %s", selectedPersonalities);
+      // console.log(personalities);
+      // console.log("selected personalities: %s", selectedPersonalities);
       // increase personalities by 1
       const nextPersonalities = { ...personalities };
       selectedPersonalities.forEach(personality => {
         nextPersonalities[personality] = nextPersonalities[personality] + 1;
-        console.log("personality: ", personality);
+        // console.log("personality: ", personality);
       });
       setPersonalities(nextPersonalities);
       setStoryText(gameData[newState].text);  
       // console.log("new image: ","\""+gameData[newState].image+"\"");
-      console.log(newState)
-
+      // console.log(newState)
       setStoryImage(gameData[newState].image);
       setCurrentState(newState);
     }
@@ -76,29 +74,29 @@ export default function Home() {
     return buttonList;
   };
 
-  function revealMostSelectedVegetable() {
-    console.log("calculating fate");
+  function revealMostSelectedJellycat() {
+    // console.log("calculating fate");
     let maxCount = 0;
-    let maxVeggie = '';
+    let maxJelly = '';
 
     setEndGame(true);
 
-    for (const [vegetable, count] of Object.entries(personalities)){
+    for (const [jellycat, count] of Object.entries(personalities)){
         if (count > maxCount) {
             maxCount = count;
-            maxVeggie = vegetable;
+            maxJelly = jellycat;
         }
     }
-    console.log(maxVeggie);
-    setStoryText(`You are a ${maxVeggie}! Right click or hold the image to save`);
-    const veggieImagePath = `/smaller_images/id_cards/${maxVeggie}.png`;
-    setStoryImage(veggieImagePath);
-    console.log(endGame);
+    // console.log(maxJelly);
+    setStoryText(`You are a ${maxJelly}! Right click or hold the image to save`);
+    const jellyImagePath = `/smaller_images/id_cards/${maxJelly}.png`;
+    setStoryImage(jellyImagePath);
+    // console.log(endGame);
   }
 
   function createShareButton() {
     return (<div className="choice-button" id="choices" onClick={() => {
-      const shareMessage = `Check out my Veggie ID! You can create yours at https://which-jellycat.vercel.app/`;
+      const shareMessage = `Check out my Jellycat ID! You can create yours at https://which-jellycat.vercel.app/`;
             navigator.clipboard.writeText(shareMessage).then(() => {
                 alert('Link copied to clipboard!');
             }).catch(() => {
