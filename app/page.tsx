@@ -31,8 +31,8 @@ export default function Home() {
   function startGame() {
     if (justStarted) {
       setJustStarted(false);
-      setStoryText(gameData[currentState].text);
       setStoryImage(gameData[currentState].image);
+      setStoryText(gameData[currentState].text);
       // console.log(storyImage);
       // console.log("currentState is ", currentState);
     }
@@ -52,10 +52,10 @@ export default function Home() {
         // console.log("personality: ", personality);
       });
       setPersonalities(nextPersonalities);
+      setStoryImage(gameData[newState].image);
       setStoryText(gameData[newState].text);  
       // console.log("new image: ","\""+gameData[newState].image+"\"");
       // console.log(newState)
-      setStoryImage(gameData[newState].image);
       setCurrentState(newState);
     }
   }
@@ -88,9 +88,9 @@ export default function Home() {
         }
     }
     // console.log(maxJelly);
-    setStoryText(`You are a ${maxJelly}! Right click or hold the image to save`);
     const jellyImagePath = `/smaller_images/id_cards/${maxJelly}.png`;
     setStoryImage(jellyImagePath);
+    setStoryText(`You are a ${maxJelly}! Right click or hold the image to save`);
     // console.log(endGame);
   }
 
@@ -116,6 +116,7 @@ export default function Home() {
             alt="Homescreen inspo"
             width={500}
             height={500}
+            priority={true}
           />
             {/* <img className="home-screen" src={storyImage} alt="Start"/> */}
             </div>
@@ -131,6 +132,7 @@ export default function Home() {
             alt="Picture of Jellycat"
             width={500}
             height={500}
+            priority={true}
           />
                 {/* <img id="story-image" src={storyImage} alt="Story"/> */}
           </div>
