@@ -49,7 +49,7 @@ const gameData: Record<number, GameState> = {
     }
   },
   5: {
-    text: "You head to the farmer's market, and it's really crowded! You find your friends but realize they're having trouble meeting up with another pal, Angie the Acorn.",
+    text: "You head to the farmer's market, and it's really crowded! You find your friends but realize you're missing Angie the Acorn.",
     image: "/larger_images/farmers_market_friends.png",
     choices: {
       "Let Becky the Bubble Tea find her, she's tall ": [6, ["Toast", "Strawberry"]],

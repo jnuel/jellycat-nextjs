@@ -27,12 +27,14 @@ export default function Home() {
   const [storyText, setStoryText] = useState<string>("");
   const [endGame, setEndGame] = useState<boolean>(false);
   const [storyImage, setStoryImage] = useState<string>("/larger_images/goodmorning.png");
+  const [progress, setProgress] = useState<number>(0);
 
   function startGame() {
     if (justStarted) {
       setJustStarted(false);
       setStoryImage(gameData[currentState].image);
       setStoryText(gameData[currentState].text);
+      setProgress(10); // Initial progress
       // console.log(storyImage);
       // console.log("currentState is ", currentState);
     }
@@ -57,6 +59,7 @@ export default function Home() {
       // console.log("new image: ","\""+gameData[newState].image+"\"");
       // console.log(newState)
       setCurrentState(newState);
+      setProgress(progress + 10); // Update progress
     }
   }
 
@@ -125,6 +128,9 @@ export default function Home() {
       ) : (
         <div>
           <div className="game-container" id="game-container">
+          <div className="progress-bar">
+            <div className="progress" style={{ width: `${progress}%` }}></div>
+          </div>
           <div className="story-text" id="story-text">{storyText}</div>
           <div className="image-container">
           <Image

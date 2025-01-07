@@ -105,3 +105,18 @@ margin-top: 1rem; /* Space above the choices container */
   max-width: 100%;
   height: auto;
 }
+
+.progress-bar {
+  width: 100%;
+  background-color: #f3f3f3;
+  border-radius: 5px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.progress {
+  height: 20px;
+  background-color: #4caf50;
+  width: 0;
+  transition: width 0.3s;
+}
