@@ -1,101 +1,149 @@
+'use client'
 import Image from "next/image";
+import React from "react";
+import './styles.css';
+import { useState } from 'react';
+import gameData from './GameData';
+
+type Personality = "Toast" | "Tennis Ball" | "Peanut" | "Strawberry" | "Cloud" | "Bubble Tea" | "Disco Ball" | "Croissant" | "Sun" | "Pickle";
+
+const personalities_initial_state: Record<Personality, number> = {
+  "Toast": 0,
+  "Tennis Ball": 0,
+  "Peanut": 0,
+  "Strawberry": 0,
+  "Cloud": 0,
+  "Bubble Tea": 0,
+  "Disco Ball": 0,
+  "Croissant": 0,
+  "Sun": 0,
+  "Pickle": 0,
+};
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const [currentState, setCurrentState] = useState<number>(1);
+  const [personalities, setPersonalities] = useState<Record<Personality, number>>(personalities_initial_state);
+  const [justStarted, setJustStarted] = useState<boolean>(true);
+  const [storyText, setStoryText] = useState<string>("");
+  const [endGame, setEndGame] = useState<boolean>(false);
+  const [storyImage, setStoryImage] = useState<string>("/larger_images/goodmorning.png");
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+  function startGame() {
+    console.log("miniApp");
+    if (justStarted) {
+      setJustStarted(false);
+      setStoryText(gameData[currentState].text);
+      setStoryImage(gameData[currentState].image);
+      console.log(storyImage);
+      console.log("currentState is ", currentState);
+    }
+  }
+
+  function changeState(newState: number, selectedPersonalities: Personality[]) {
+    if (newState === 0) {
+      console.log("reveal most selected vegetable!");
+      revealMostSelectedVegetable();
+    } else {
+      console.log(personalities);
+      console.log("selected personalities: %s", selectedPersonalities);
+      // increase personalities by 1
+      const nextPersonalities = { ...personalities };
+      selectedPersonalities.forEach(personality => {
+        nextPersonalities[personality] = nextPersonalities[personality] + 1;
+        console.log("personality: ", personality);
+      });
+      setPersonalities(nextPersonalities);
+      setStoryText(gameData[newState].text);  
+      // console.log("new image: ","\""+gameData[newState].image+"\"");
+      console.log(newState)
+
+      setStoryImage(gameData[newState].image);
+      setCurrentState(newState);
+    }
+  }
+
+  function createButtons() {
+    // console.log("current state from create buttons: ", currentState);
+    const buttonList = [];
+
+    for (const [choice, info] of Object.entries(gameData[currentState].choices)) {
+      // console.log("choices: ", gameData[currentState].choices);
+      // console.log("choice: ", choice);
+      // console.log("info: ", info);
+      const nextState = info[0];
+      buttonList.push(<div className="choice-button" onClick={() => changeState(nextState, info[1] as Personality[])}>{choice}</div>);
+    }
+    return buttonList;
+  };
+
+  function revealMostSelectedVegetable() {
+    console.log("calculating fate");
+    let maxCount = 0;
+    let maxVeggie = '';
+
+    setEndGame(true);
+
+    for (const [vegetable, count] of Object.entries(personalities)){
+        if (count > maxCount) {
+            maxCount = count;
+            maxVeggie = vegetable;
+        }
+    }
+    console.log(maxVeggie);
+    setStoryText(`You are a ${maxVeggie}! Right click or hold the image to save`);
+    const veggieImagePath = `/smaller_images/id_cards/${maxVeggie}.png`;
+    setStoryImage(veggieImagePath);
+    console.log(endGame);
+  }
+
+  function createShareButton() {
+    return (<div className="choice-button" id="choices" onClick={() => {
+      const shareMessage = `Check out my Veggie ID! You can create yours at https://jnuel.github.io/jellycat/`;
+            navigator.clipboard.writeText(shareMessage).then(() => {
+                alert('Link copied to clipboard!');
+            }).catch(() => {
+                alert('Failed to copy link. Please try again.');
+            });
+          }}>Share the game with friends</div>);
+  }
+
+  return (
+    <div className="container">
+      { justStarted ? (
+        <div>
+          <div className="title">What Jellycat are you?</div>
+          <div className="image-container">
+          <Image
+            src="/homescreen_inspo.png"
+            alt="Homescreen_inspo"
+            width={1000}
+            height={1000}
+          />
+            {/* <img className="home-screen" src={storyImage} alt="Start"/> */}
+            </div>
+          <a href="#" className="start-button" onClick={startGame}>Start</a>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
+      ) : (
+        <div>
+          <div className="game-container" id="game-container">
+          <div className="story-text" id="story-text">{storyText}</div>
+          <div className="image-container">
           <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
+            src={storyImage}
+            alt="Homescreen_inspo"
+            width={1000}
+            height={1000}
           />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+                {/* <img id="story-image" src={storyImage} alt="Story"/> */}
+          </div>
+          <div className="end-div">
+            { endGame ? (<div> {createShareButton()} </div>) : <div>{Object.entries(gameData[currentState].choices)? (
+                <div className="choices" id="choices"> {createButtons()}
+                </div> ): <div></div>}</div>}
+            </div>
+            </div>
+        </div>
+      )}
     </div>
   );
 }
