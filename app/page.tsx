@@ -129,8 +129,8 @@ export default function Home() {
           <Image
             src={storyImage}
             alt="Homescreen_inspo"
-            width={1000}
-            height={1000}
+            width={600}
+            height={500}
           />
                 {/* <img id="story-image" src={storyImage} alt="Story"/> */}
           </div>
