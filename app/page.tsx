@@ -98,7 +98,7 @@ export default function Home() {
 
   function createShareButton() {
     return (<div className="choice-button" id="choices" onClick={() => {
-      const shareMessage = `Check out my Veggie ID! You can create yours at https://jnuel.github.io/jellycat/`;
+      const shareMessage = `Check out my Veggie ID! You can create yours at https://which-jellycat.vercel.app/`;
             navigator.clipboard.writeText(shareMessage).then(() => {
                 alert('Link copied to clipboard!');
             }).catch(() => {
