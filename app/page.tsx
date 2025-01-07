@@ -113,8 +113,8 @@ export default function Home() {
           <div className="image-container">
           <Image
             src="/homescreen_inspo.png"
-            alt="Homescreen_inspo"
-            width={600}
+            alt="Homescreen inspo"
+            width={500}
             height={500}
           />
             {/* <img className="home-screen" src={storyImage} alt="Start"/> */}
@@ -128,8 +128,8 @@ export default function Home() {
           <div className="image-container">
           <Image
             src={storyImage}
-            alt="Homescreen_inspo"
-            width={600}
+            alt="Picture of Jellycat"
+            width={500}
             height={500}
           />
                 {/* <img id="story-image" src={storyImage} alt="Story"/> */}
